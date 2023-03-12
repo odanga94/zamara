@@ -7,18 +7,20 @@ import {
 import {
   Platform,
   SafeAreaView,
-  Button,
   View,
   ActivityIndicator,
+  StyleSheet,
+  Text,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Fontisto } from "@expo/vector-icons";
 // import { useDispatch } from "react-redux";
 
-import DashboardScreen from "./Dashboard";
-/* import ProductDetailsScreen, {
-  detailsScreenOptions,
-} from "../screens/shop/ProductDetailsScreen";
-import CartScreen, { cartScreenOptions } from "../screens/shop/CartScreen";
+import DashboardScreen, { screenOptions } from "../Screens/Dashboard";
+import StaffScreen, {staffScreenOptions} from "../Screens/Staff";
+import ContinentsScreen, {continentsScreenOptions} from "../Screens/Continents";
+import Button from "../Components/UI/Button";
+/*
+
 import OrdersScreen, {
   ordersScreenOptions,
 } from "../screens/shop/OrdersScreen";
@@ -31,51 +33,54 @@ import EditProductScreen, {
 import AuthScreen, { authScreenOptions } from "../screens/user/AuthScreen"; */
 // import { logOut } from "../store/actions/auth";
 
-import constants from "../utils/constants";
+import constants, { defaultStackNavOptions } from "../utils/constants";
 
-const defaultStackNavOptions = {
-  headerStyle: {
-    backgroundColor: Platform.OS === "android" ? constants.secondaryColor : "white",
-  },
-  headerTitleStyle: {
-    fontFamily: "open-sans-bold",
-  },
-  headerBackTitleStyle: {
-    fontFamily: "open-sans",
-  },
-  headerTintColor: Platform.OS === "android" ? "white" : constants.secondaryColor,
-};
+const HomeStackNavigator = createStackNavigator();
 
-const DashboardStackNavigator = createStackNavigator();
-
-const DashboardNavigator = () => {
+const HomeNavigator = () => {
   return (
-    <DashboardStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <DashboardStackNavigator.Screen
+    <HomeStackNavigator.Navigator
+      screenOptions={defaultStackNavOptions}
+      // headerMode={"none"}
+    >
+      <HomeStackNavigator.Screen
         name="Dashboard"
         component={DashboardScreen}
         options={screenOptions}
       />
-
-    </DashboardStackNavigator.Navigator>
+    </HomeStackNavigator.Navigator>
   );
 };
 
-/* const OrdersStackNavigator = createStackNavigator();
+const StaffStackNavigator = createStackNavigator();
 
-export const OrdersNavigator = () => {
+export const StaffNavigator = () => {
   return (
-    <OrdersStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <OrdersStackNavigator.Screen
-        name="Orders"
-        component={OrdersScreen}
-        options={ordersScreenOptions}
+    <StaffStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <StaffStackNavigator.Screen
+        name="Staff"
+        component={StaffScreen}
+        options={staffScreenOptions}
       />
-    </OrdersStackNavigator.Navigator>
+    </StaffStackNavigator.Navigator>
   );
 };
 
-const AdminStackNavigator = createStackNavigator();
+const ContinentsStackNavigator = createStackNavigator();
+
+export const ContinentsNavigator = () => {
+  return (
+    <ContinentsStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
+      <ContinentsStackNavigator.Screen
+        name="Staff"
+        component={ContinentsScreen}
+        options={continentsScreenOptions}
+      />
+    </ContinentsStackNavigator.Navigator>
+  );
+};
+
+/* const AdminStackNavigator = createStackNavigator();
 
 const AdminNavigator = () => {
   return (
@@ -104,22 +109,30 @@ export const MenuNavigator = () => {
     <MenuDrawerNavigator.Navigator
       drawerContent={(props) => {
         return (
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, marginTop: 25 }}>
             <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
               <DrawerItemList {...props} />
               <View style={{ paddingHorizontal: 20, marginVertical: 20 }}>
                 {logOutLoading ? (
-                  <ActivityIndicator size="large" color={Colors.primaryColor} />
+                  <ActivityIndicator
+                    size="large"
+                    color={constants.primaryColor}
+                  />
                 ) : (
                   <Button
-                    title="Log Out"
-                    color={constants.primaryColor}
+                    style={styles.fourthView}
                     onPress={async () => {
                       setLogOutLoading(true);
                       // await dispatch(logOut());
                       // props.navigation.navigate("Auth");
+                      props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: "Auth" }],
+                      });
                     }}
-                  />
+                  >
+                    <Text style={styles.sixthText}>SIGN OUT</Text>
+                  </Button>
                 )}
               </View>
             </SafeAreaView>
@@ -127,16 +140,16 @@ export const MenuNavigator = () => {
         );
       }}
       drawerContentOptions={{
-        activeTintColor: constants.secondaryColor,
+        activeTintColor: constants.primaryColor,
         labelStyle: {
-          fontFamily: "open-sans-bold",
+          fontFamily: "poppins-bold",
         },
       }}
       hideStatusBar
     >
       <MenuDrawerNavigator.Screen
-        name="Dashboard"
-        component={DashboardNavigator}
+        name="HOME"
+        component={HomeNavigator}
         options={{
           drawerIcon: (props) => (
             <Ionicons
@@ -146,21 +159,35 @@ export const MenuNavigator = () => {
             />
           ),
         }}
+        
       />
-      {/* <ShopDrawerNavigator.Screen
-        name="Orders"
-        component={OrdersNavigator}
+      <MenuDrawerNavigator.Screen
+        name="STAFF"
+        component={StaffNavigator}
         options={{
           drawerIcon: (props) => (
             <Ionicons
-              name={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+              name={Platform.OS === "android" ? "people" : "ios-people"}
               size={23}
               color={props.color}
             />
           ),
         }}
       />
-      <ShopDrawerNavigator.Screen
+      <MenuDrawerNavigator.Screen
+        name="CONTINENTS"
+        component={ContinentsNavigator}
+        options={{
+          drawerIcon: (props) => (
+            <Fontisto
+              name={"world"}
+              size={23}
+              color={props.color}
+            />
+          ),
+        }}
+      />
+      {/* <ShopDrawerNavigator.Screen
         name="Admin"
         component={AdminNavigator}
         options={{
@@ -177,4 +204,20 @@ export const MenuNavigator = () => {
   );
 };
 
-
+const styles = StyleSheet.create({
+  fourthView: {
+    height: 50,
+    width: constants.styleGuide.width / 2,
+    backgroundColor: constants.primaryColor,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    marginTop: 50,
+    alignSelf: "center",
+  },
+  sixthText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+});

@@ -31,4 +31,17 @@ const constants = {
   },
 };
 
+export const defaultStackNavOptions = {
+  headerStyle: {
+    backgroundColor: constants.secondaryColor,
+  },
+  headerTitleStyle: {
+    fontFamily: "poppins-bold",
+  },
+  headerBackTitleStyle: {
+    fontFamily: "poppins-regular",
+  },
+  headerTintColor: "white",
+};
+
 export default constants;

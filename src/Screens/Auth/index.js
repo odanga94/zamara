@@ -9,13 +9,14 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 // import {useDispatch} from 'react-redux';
 // import {StackNavigationProp} from '@react-navigation/stack';
 
 import Button from "../../Components/UI/Button";
-// import Spinner from '../../Components/UI/Spinner';
-// import * as authActions from '../../store/actions/user/auth';
+import Spinner from "../../Components/UI/Spinner";
+import * as authActions from "../../store/actions/auth";
 import SignInWithEmailForm from "../../Components/SignInWithEmail";
 import styles from "./styles";
 import constants from "../../utils/constants";
@@ -23,36 +24,37 @@ import constants from "../../utils/constants";
 const Auth = (props) => {
   const { navigation } = props;
 
-  // const dispatch = useDispatch();
+  // console.log("props", props);
 
-  const [isEmailAuth, setIsEmailAuth] = useState(true);
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [credentials, setCredentials] = useState();
 
   const authHandler = async () => {
     if (!formIsValid) {
-      Alert.alert('Wrong Input!', 'Please check the errors in the form.', [
-        {text: 'Okay'},
+      Alert.alert("Wrong Input!", "Please check the errors in the form.", [
+        { text: "Okay" },
       ]);
       return;
     }
     //console.log(credentials);
     setIsLoading(true);
     try {
-      /* await dispatch(
-        authActions.logIn(credentials.email, credentials.password),
-      ); */
+      await dispatch(
+        authActions.logIn(/* credentials.userName, credentials.password*/)
+      );
       navigation.reset({
         index: 0,
-        routes: [{name: 'Menu'}],
+        routes: [{ name: "Menu" }],
       });
     } catch (err) {
       console.log(err);
-      Alert.alert('Something went wrong', err.message, [{text: 'Okay'}]);
+      Alert.alert("Something went wrong", err.message, [{ text: "Okay" }]);
       setIsLoading(false);
     }
-    setIsLoading(false); 
+    setIsLoading(false);
   };
 
   return (
@@ -83,11 +85,10 @@ const Auth = (props) => {
             setFormIsValid={setFormIsValid}
             setCredentials={setCredentials}
           />
-          
         </ScrollView>
-        {/* {isLoading ? (
-        <Spinner />
-      ) : ( */}
+        {isLoading ? (
+          <Spinner />
+        ) : (
           <Button
             style={styles.fourthView}
             onPress={() => {
@@ -96,14 +97,15 @@ const Auth = (props) => {
           >
             <Text style={styles.sixthText}>Log In</Text>
           </Button>
-          {/* )} */}
+        )}
       </KeyboardAvoidingView>
     </View>
   );
 };
 
-/* Auth.navigationOptions = {
-  headerTitle: 'Sign In',
-}; */
+export const authScreenOptions = {
+  headerTitle: "Authentication",
+  headerTitleAlign: "center",
+};
 
 export default Auth;

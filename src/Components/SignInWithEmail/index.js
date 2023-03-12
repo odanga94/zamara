@@ -31,11 +31,11 @@ const SignInWithEmailForm = (props) => {
   const {setFormIsValid, setCredentials} = props;
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      email: '',
+      userName: '',
       password: '',
     },
     inputValidities: {
-      email: false,
+      userName: false,
       password: false,
     },
     formIsValid: false,
@@ -61,15 +61,15 @@ const SignInWithEmailForm = (props) => {
   return (
     <Fragment>
       <Input
-        id="email"
-        label="E-mail:"
-        keyboardType="email-address"
+        id="userName"
+        label="User Name:"
+        keyboardType="default"
         autoCapitalize="none"
-        errorText="Please enter a valid email address."
+        errorText="Please enter a valid user name."
         onInputChange={inputChangeHandler}
         initialValue=""
         style={styles.textInput}
-        rules={{required: true, isEmail: true}}
+        rules={{required: true}}
         secureTextEntry={false}
         initiallyValid={true}
       />

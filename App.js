@@ -1,11 +1,25 @@
-import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import ReduxThunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 
-import Stack from "./src/Screens";
+import AppNavigator from "./src/navigation/AppNavigator";
+import authReducer from "./src/store/reducers/auth";
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+});
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(ReduxThunk))
+);
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -23,10 +37,14 @@ export default function App() {
     return null;
   }
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <Stack />
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <Provider store={store}>
+          <AppNavigator />
+        </Provider>
+        <StatusBar style="auto" />
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
