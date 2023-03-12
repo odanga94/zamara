@@ -9,9 +9,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { useDispatch } from "react-redux";
-
-// import {useDispatch} from 'react-redux';
+import { useDispatch/* , useSelector */ } from "react-redux";
 // import {StackNavigationProp} from '@react-navigation/stack';
 
 import Button from "../../Components/UI/Button";
@@ -27,7 +25,9 @@ const Auth = (props) => {
   // console.log("props", props);
 
   const dispatch = useDispatch();
-
+  /* const userId = useSelector(state => state.auth.userId);
+  console.log("authuid", userId) */
+ 
   const [isLoading, setIsLoading] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);
   const [credentials, setCredentials] = useState();
@@ -43,7 +43,7 @@ const Auth = (props) => {
     setIsLoading(true);
     try {
       await dispatch(
-        authActions.logIn(/* credentials.userName, credentials.password*/)
+        authActions.logIn(credentials.userName, credentials.password)
       );
       navigation.reset({
         index: 0,

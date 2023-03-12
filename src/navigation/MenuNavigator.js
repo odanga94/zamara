@@ -13,26 +13,13 @@ import {
   Text,
 } from "react-native";
 import { Ionicons, Fontisto } from "@expo/vector-icons";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import DashboardScreen, { screenOptions } from "../Screens/Dashboard";
 import StaffScreen, {staffScreenOptions} from "../Screens/Staff";
 import ContinentsScreen, {continentsScreenOptions} from "../Screens/Continents";
 import Button from "../Components/UI/Button";
-/*
-
-import OrdersScreen, {
-  ordersScreenOptions,
-} from "../screens/shop/OrdersScreen";
-import UserProductsScreen, {
-  userProductsScreenOptions,
-} from "../screens/user/UserProductsScreen";
-import EditProductScreen, {
-  editProductScreenOptions,
-} from "../screens/user/EditProductScreen";
-import AuthScreen, { authScreenOptions } from "../screens/user/AuthScreen"; */
-// import { logOut } from "../store/actions/auth";
-
+import { logOut } from "../store/actions/auth";
 import constants, { defaultStackNavOptions } from "../utils/constants";
 
 const HomeStackNavigator = createStackNavigator();
@@ -80,29 +67,10 @@ export const ContinentsNavigator = () => {
   );
 };
 
-/* const AdminStackNavigator = createStackNavigator();
-
-const AdminNavigator = () => {
-  return (
-    <AdminStackNavigator.Navigator screenOptions={defaultStackNavOptions}>
-      <AdminStackNavigator.Screen
-        name="UserProducts"
-        component={UserProductsScreen}
-        options={userProductsScreenOptions}
-      />
-      <AdminStackNavigator.Screen
-        name="EditProduct"
-        component={EditProductScreen}
-        options={editProductScreenOptions}
-      />
-    </AdminStackNavigator.Navigator>
-  );
-}; */
-
 const MenuDrawerNavigator = createDrawerNavigator();
 
 export const MenuNavigator = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [logOutLoading, setLogOutLoading] = useState(false);
 
   return (
@@ -123,8 +91,7 @@ export const MenuNavigator = () => {
                     style={styles.fourthView}
                     onPress={async () => {
                       setLogOutLoading(true);
-                      // await dispatch(logOut());
-                      // props.navigation.navigate("Auth");
+                      await dispatch(logOut());
                       props.navigation.reset({
                         index: 0,
                         routes: [{ name: "Auth" }],
