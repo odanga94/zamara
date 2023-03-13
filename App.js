@@ -12,10 +12,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import AppNavigator from "./src/navigation/AppNavigator";
 import authReducer from "./src/store/reducers/auth";
 import userReducer from "./src/store/reducers/user";
+import staffReducer from "./src/store/reducers/staff";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  user: userReducer
+  user: userReducer,
+  staff: staffReducer
 });
 
 const store = createStore(

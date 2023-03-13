@@ -71,7 +71,7 @@ const SignInWithEmailForm = (props) => {
         style={styles.textInput}
         rules={{required: true}}
         secureTextEntry={false}
-        initiallyValid={true}
+        initiallyValid={false}
       />
       <Input
         id="password"
@@ -79,12 +79,12 @@ const SignInWithEmailForm = (props) => {
         keyboardType="default"
         secureTextEntry
         autoCapitalize="none"
-        errorText="Password should be at least 6 characters."
+        errorText="Please enter a valid password."
         onInputChange={inputChangeHandler}
         initialValue=""
         style={styles.textInput}
-        rules={{minLength: 6, required: true}}
-        initiallyValid={true}
+        rules={{required: true}}
+        initiallyValid={false}
       />
     </Fragment>
   );

@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 
 import DashboardScreen, { screenOptions } from "../Screens/Dashboard";
 import StaffScreen, {staffScreenOptions} from "../Screens/Staff";
+import EditStaffScreen, {editStaffScreenOptions} from "../Screens/Staff/EditStaff";
 import ContinentsScreen, {continentsScreenOptions} from "../Screens/Continents";
 import Button from "../Components/UI/Button";
 import { logOut } from "../store/actions/auth";
@@ -48,6 +49,11 @@ export const StaffNavigator = () => {
         name="Staff"
         component={StaffScreen}
         options={staffScreenOptions}
+      />
+       <StaffStackNavigator.Screen
+        name="Edit Staff"
+        component={EditStaffScreen}
+        options={editStaffScreenOptions}
       />
     </StaffStackNavigator.Navigator>
   );

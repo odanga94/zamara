@@ -36,6 +36,7 @@ const Input = (props) => {
     style,
     rules,
     passwordValue,
+    labelStyle
   } = props;
 
   const [inputState, dispatch] = useReducer(inputReducer, {
@@ -61,7 +62,7 @@ const Input = (props) => {
 
   return (
     <View style={styles.formControl}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={{...styles.label, ...labelStyle}}>{label}</Text>
       <TextInput
         {...props}
         style={{ ...styles.input, ...style }}
