@@ -1,5 +1,6 @@
 class Staff {
-  constructor(staffNumber, staffName, staffEmail, department, salary) {
+  constructor(staffId, staffNumber, staffName, staffEmail, department, salary) {
+    this.staffId = staffId;
     this.staffNumber = staffNumber;
     this.staffName = staffName;
     this.staffEmail = staffEmail;

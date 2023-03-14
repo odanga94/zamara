@@ -45,6 +45,8 @@ const Input = (props) => {
     touched: false,
   });
 
+  // console.log("state", inputState);
+
   useEffect(() => {
     if (inputState.touched) {
       onInputChange(id, inputState.value, inputState.isValid);

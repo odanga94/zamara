@@ -45,7 +45,7 @@ const SignInWithEmailForm = (props) => {
     (inputLabel, value, validity) => {
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
-        value,
+        value: value.trim(),
         isValid: validity,
         inputLabel,
       });

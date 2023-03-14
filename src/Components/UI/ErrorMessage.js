@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 import constants from "../../utils/constants";
+import Button from "./Button";
 
 const ErrorMessage = (props) => {
   return (
@@ -10,12 +11,17 @@ const ErrorMessage = (props) => {
       <Text style={styles.message}>{props.message}</Text>
       <View style={{ marginVertical: 15 }}>
         <Button
-          title="Try Again"
-          color={constants.secondaryColor}
+          style={{
+            ...styles.button,
+            width: constants.styleGuide.width / 1.2,
+            borderRadius: 10,
+          }}
           onPress={() => {
             props.pressed();
           }}
-        />
+        >
+          <Text style={styles.sixthText}>TRY AGAIN</Text>
+        </Button>
       </View>
     </View>
   );
@@ -32,6 +38,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginHorizontal: 15,
     textAlign: "center",
+  },
+  button: {
+    height: 50,
+    width: constants.styleGuide.width / 3,
+    backgroundColor: constants.primaryColor,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 25,
+    marginTop: 25,
+    // alignSelf: "center",
+  },
+  sixthText: {
+    color: "#fff",
+    fontSize: 16,
+    fontFamily: "poppins-bold",
   },
 });
 

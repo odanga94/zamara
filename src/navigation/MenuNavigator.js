@@ -16,9 +16,13 @@ import { Ionicons, Fontisto } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 
 import DashboardScreen, { screenOptions } from "../Screens/Dashboard";
-import StaffScreen, {staffScreenOptions} from "../Screens/Staff";
-import EditStaffScreen, {editStaffScreenOptions} from "../Screens/Staff/EditStaff";
-import ContinentsScreen, {continentsScreenOptions} from "../Screens/Continents";
+import StaffScreen, { staffScreenOptions } from "../Screens/Staff";
+import EditStaffScreen, {
+  editStaffScreenOptions,
+} from "../Screens/Staff/EditStaff";
+import ContinentsScreen, {
+  continentsScreenOptions,
+} from "../Screens/Continents";
 import Button from "../Components/UI/Button";
 import { logOut } from "../store/actions/auth";
 import constants, { defaultStackNavOptions } from "../utils/constants";
@@ -50,7 +54,7 @@ export const StaffNavigator = () => {
         component={StaffScreen}
         options={staffScreenOptions}
       />
-       <StaffStackNavigator.Screen
+      <StaffStackNavigator.Screen
         name="Edit Staff"
         component={EditStaffScreen}
         options={editStaffScreenOptions}
@@ -132,7 +136,6 @@ export const MenuNavigator = () => {
             />
           ),
         }}
-        
       />
       <MenuDrawerNavigator.Screen
         name="STAFF"
@@ -152,27 +155,10 @@ export const MenuNavigator = () => {
         component={ContinentsNavigator}
         options={{
           drawerIcon: (props) => (
-            <Fontisto
-              name={"world"}
-              size={23}
-              color={props.color}
-            />
+            <Fontisto name={"world"} size={23} color={props.color} />
           ),
         }}
       />
-      {/* <ShopDrawerNavigator.Screen
-        name="Admin"
-        component={AdminNavigator}
-        options={{
-          drawerIcon: (props) => (
-            <Ionicons
-              name={Platform.OS === "android" ? "md-create" : "ios-create"}
-              size={23}
-              color={props.color}
-            />
-          ),
-        }}
-      /> */}
     </MenuDrawerNavigator.Navigator>
   );
 };

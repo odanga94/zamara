@@ -1,11 +1,9 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
-const {height} = Dimensions.get('window');
 import constants from '../../utils/constants';
 
 const styles = StyleSheet.create({
   screen: {
-    //height: '95%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

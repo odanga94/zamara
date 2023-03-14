@@ -1,20 +1,8 @@
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT = "LOGOUT";
-// export const SET_DID_TRY_AL = "SET_DID_TRY_AL";
 
-let timer;
-
-/* export const setDidTryAl = () => {
-  return {
-    type: SET_DID_TRY_AL,
-  };
-}; */
-
-export const authenticate = (token, userId /* , expiryTime */) => {
+export const authenticate = (token, userId) => {
   return (dispatch) => {
-    // dispatch(setLogOutTimer(expiryTime));
     dispatch({
       type: AUTHENTICATE,
       token,
@@ -34,7 +22,6 @@ export const logIn = (username, password) => {
         body: JSON.stringify({
           username,
           password,
-          // returnSecureToken: true,
         }),
       });
 
@@ -50,18 +37,10 @@ export const logIn = (username, password) => {
       const resData = await response.json();
       // console.log("res", resData);
 
-      /*       const expirationDate = new Date(
-        new Date().getTime() + parseInt(resData.expiresIn) * 1000
-      ); */
-      // console.log('exp', expirationDate);
-      // await saveDataToStorage(resData.idToken, resData.localId, expirationDate);
-      // console.log("saved");
-
       dispatch(
         authenticate(
           resData.token,
           resData.id
-          // +resData.expiresIn * 1000
         )
       );
     } catch (err) {
@@ -71,82 +50,8 @@ export const logIn = (username, password) => {
   };
 };
 
-/* const saveDataToStorage = (token, userId, expirationDate) => {
-  return AsyncStorage.setItem(
-    "userData",
-    JSON.stringify({
-      token,
-      userId,
-      expiryDate: expirationDate.toISOString(),
-    })
-  );
-}; */
-/* 
-export const signUp = (email, password) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBCK6BBfT63eUOXGf2EOKsYSyFxe__3qBU",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            returnSecureToken: true,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorCode = errorResData.error.message;
-        // console.log(errorResData);
-        let message = "Something went wrong 😞";
-        if (errorCode === "EMAIL_EXISTS") {
-          message = "This Email already exists in our database 😞";
-        }
-        throw new Error(message);
-      }
-
-      const resData = await response.json();
-      // console.log(resData);
-
-      const expirationDate = new Date(
-        new Date().getTime() + parseInt(resData.expiresIn) * 1000
-      );
-      await saveDataToStorage(resData.idToken, resData.localId, expirationDate);
-      // console.log("saved");
-
-      dispatch(
-        authenticate(
-          resData.idToken,
-          resData.localId,
-          +resData.expiresIn * 1000
-        )
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
-}; */
-
-/* const setLogOutTimer = (expirationTime) => {
-  return (dispatch) => {
-    timer = setTimeout(() => {
-      dispatch(logOut());
-    }, expirationTime);
-  };
-}; */
-
 export const logOut = () => {
   return async (dispatch) => {
-    /* if (timer) {
-      clearTimeout(timer);
-    }
-    await AsyncStorage.removeItem("userData"); */
     dispatch({
       type: LOGOUT,
     });

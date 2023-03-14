@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -11,11 +11,17 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 
+import Spinner from "../../Components/UI/Spinner";
 import CustomHeaderButton from "../../Components/UI/HeaderButton";
 import constants from "../../utils/constants";
 import Card from "../../Components/UI/Card";
 import Button from "../../Components/UI/Button";
-import { setStaffData, removeStaff } from "../../store/actions/staff";
+import {
+  setStaffData,
+  removeStaff,
+  fetchStaff,
+} from "../../store/actions/staff";
+import ErrorMessage from "../../Components/UI/ErrorMessage";
 
 const Staff = (props) => {
   const dispatch = useDispatch();
@@ -23,14 +29,30 @@ const Staff = (props) => {
   // console.log("staff", staffItems);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const loadStaff = useCallback(async () => {
+    // console.log("LOAD PRODUCTS!");
+    setErrorMessage("");
+    setIsLoading(true);
+    try {
+      await dispatch(fetchStaff());
+    } catch (err) {
+      console.log(err.message);
+      setErrorMessage(err.message);
+    }
+    setIsLoading(false);
+  }, [dispatch]);
 
   useEffect(() => {
+    loadStaff();
     dispatch(setStaffData());
   }, [dispatch]);
 
   const deleteStaff = (staffId) => {
     const staffBeingDeleted = staffItems.find(
-      (staff) => staff.staffNumber === staffId
+      (staff) => staff.staffId === staffId
     );
 
     Alert.alert(
@@ -42,13 +64,14 @@ const Staff = (props) => {
           text: "Yes",
           style: "destructive",
           onPress: async () => {
+            setDeleteLoading(true);
             try {
-              //await dispatch(deleteProduct(pid));
-              dispatch(removeStaff(staffId));
+              await dispatch(removeStaff(staffId));
             } catch (err) {
               console;
               setErrorMessage(err.message);
             }
+            setDeleteLoading(false);
           },
         },
       ]
@@ -61,6 +84,10 @@ const Staff = (props) => {
     });
   };
 
+  if (isLoading || deleteLoading) {
+    return <Spinner/>
+  }
+
   if (!isLoading && staffItems.length === 0) {
     return (
       <View style={styles.centered}>
@@ -68,7 +95,11 @@ const Staff = (props) => {
           No staff found. Maybe start adding some!
         </Text>
         <Button
-          style={{...styles.button, width: constants.styleGuide.width / 1.2, borderRadius: 10 }}
+          style={{
+            ...styles.button,
+            width: constants.styleGuide.width / 1.2,
+            borderRadius: 10,
+          }}
           onPress={() => {
             props.navigation.navigate("Edit Staff");
           }}
@@ -79,6 +110,10 @@ const Staff = (props) => {
     );
   }
 
+  if (!isLoading && errorMessage) {
+    return <ErrorMessage message={errorMessage} pressed={loadStaff} />;
+  }
+
   return (
     <FlatList
       // contentContainerStyle={styles.staffContainer}
@@ -86,7 +121,7 @@ const Staff = (props) => {
       keyExtractor={(item, index) => {
         // console.log(item);
         // return index;
-        return item.staffNumber;
+        return item.staffId;
       }}
       renderItem={(itemData) => (
         <Card style={styles.card}>
@@ -131,13 +166,13 @@ const Staff = (props) => {
           <View style={styles.buttonContainer}>
             <Button
               style={styles.button}
-              onPress={() => editStaffHandler(itemData.item.staffNumber)}
+              onPress={() => editStaffHandler(itemData.item.staffId)}
             >
               <Text style={styles.sixthText}>UPDATE</Text>
             </Button>
             <Button
               style={styles.button}
-              onPress={() => deleteStaff(itemData.item.staffNumber)}
+              onPress={() => deleteStaff(itemData.item.staffId)}
             >
               <Text style={styles.sixthText}>DELETE</Text>
             </Button>
@@ -165,7 +200,7 @@ export const staffScreenOptions = (navData) => {
             // console.log("nav", navData);
             navData.navigation.navigate("Edit Staff");
           }}
-        />
+        />    
       </HeaderButtons>
     ),
     headerLeft: () => (
@@ -203,11 +238,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    // width: "100%",
-    /*  flex: 1,
-,
-    justifyContent: "space-around", */
-    // paddingHorizontal: 10
   },
   imageContainer: {
     flex: 1,

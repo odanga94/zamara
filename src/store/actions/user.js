@@ -17,13 +17,6 @@ export const fetchUserData = (userId) => {
       const resData = await response.json();
       // console.log("userRes", resData);
 
-      /*       const expirationDate = new Date(
-            new Date().getTime() + parseInt(resData.expiresIn) * 1000
-          ); */
-      // console.log('exp', expirationDate);
-      // await saveDataToStorage(resData.idToken, resData.localId, expirationDate);
-      // console.log("saved");
-
       dispatch(setUserData(resData));
     } catch (err) {
       console.log("err", err);

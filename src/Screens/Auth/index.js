@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -9,8 +8,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { useDispatch/* , useSelector */ } from "react-redux";
-// import {StackNavigationProp} from '@react-navigation/stack';
+import { useDispatch } from "react-redux";
 
 import Button from "../../Components/UI/Button";
 import Spinner from "../../Components/UI/Spinner";
@@ -25,8 +23,6 @@ const Auth = (props) => {
   // console.log("props", props);
 
   const dispatch = useDispatch();
-  /* const userId = useSelector(state => state.auth.userId);
-  console.log("authuid", userId) */
  
   const [isLoading, setIsLoading] = useState(false);
   const [formIsValid, setFormIsValid] = useState(false);

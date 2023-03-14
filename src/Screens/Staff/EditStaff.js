@@ -50,7 +50,7 @@ const EditStaffScreen = (props) => {
 
   const staffId = props.route.params ? props.route.params.staffId : null;
   const editedStaff = useSelector((state) =>
-    state.staff.staff.find((staffMember) => staffMember.staffNumber === staffId)
+    state.staff.staff.find((staffMember) => staffMember.staffId === staffId)
   );
 
   // console.log("ed", editedStaff.salary);
@@ -93,12 +93,12 @@ const EditStaffScreen = (props) => {
       if (editedStaff) {
         await dispatch(
           updateStaff(
+            staffId,
             formState.inputValues.staffNumber,
             formState.inputValues.staffName,
             formState.inputValues.staffEmail,
             formState.inputValues.department,
-            +formState.inputValues.salary,
-            staffId
+            +formState.inputValues.salary
           )
         );
       } else {
@@ -108,13 +108,13 @@ const EditStaffScreen = (props) => {
             formState.inputValues.staffName,
             formState.inputValues.staffEmail,
             formState.inputValues.department,
-            formState.inputValues.salary
+            +formState.inputValues.salary
           )
         );
       }
       props.navigation.goBack();
     } catch (err) {
-      Alert.alert("Error!", `${err.message} Please try again later`, [
+      Alert.alert("Error!", `${err.message}. Please try again later`, [
         { text: "Okay" },
       ]);
       setErrorMessage(err.message);
@@ -155,10 +155,6 @@ const EditStaffScreen = (props) => {
   if (isLoading) {
     return <Spinner />;
   }
-
-  /* if (!isLoading && errorMessage) {
-    return <ErrorMessage message={errorMessage} pressed={loadProducts} />;
-  } */
 
   return (
     <KeyboardAvoidingView
@@ -239,11 +235,12 @@ const EditStaffScreen = (props) => {
 };
 
 export const editStaffScreenOptions = (navData) => {
-  // const submitFn = navData.route.params ? navData.route.params.submit : null;
   const routeParams = navData.route.params ? navData.route.params : {};
 
   return {
-    headerTitle: routeParams.staffId ? "EDIT STAFF MEMBER" :  "ADD STAFF MEMBER ",
+    headerTitle: routeParams.staffId
+      ? "EDIT STAFF MEMBER"
+      : "ADD STAFF MEMBER ",
     headerTitleAlign: "center",
   };
 };
